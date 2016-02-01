@@ -2,6 +2,7 @@
 import sys, sane
 from PIL import Image
 from PIL.ImageDraw import Draw
+import datetime
 
 DPI = 1200
 MODE = 'Gray'
@@ -26,15 +27,15 @@ CUT_Y = 0.366
 
 NUM_TAKES = 3
 
-#sane.init()
-#devices = sane.get_devices()
-#epsons = [d for d in devices if d[1] == 'Epson']
-#if len(epsons) < 1:
-#    raise Exception('No supported scanner found.')
-#scanner = sane.open(epsons[0][0])
-#scanner.resolution = DPI
-#scanner.mode = MODE
-#scanner.depth = DEPTH
+sane.init()
+devices = sane.get_devices()
+scanners = [d for d in devices if d[2] == sys.argv[1]]
+if len(scanners) < 1:
+    raise Exception('Scanner %s not found. Available: %s' % (sys.argv[1], ', '.join([d[2] for d in devices])))
+scanner = sane.open(scanners[0][0])
+scanner.resolution = DPI
+scanner.mode = MODE
+scanner.depth = DEPTH
 
 def scan(region):
     scanner.tl_x = region[0]
@@ -55,20 +56,22 @@ def crop_dish(image):
     Draw(image).polygon([(width,height),(int(width*(1-CUT_X)),height),(width,int(height*(1-CUT_Y)))], fill=1)
     return image
 
-with open(sys.argv[1]) as config:
-    labels = ''.join(config.readlines()).split()
+with open(sys.argv[2]) as labels_file:
+    labels = ''.join(labels_file.readlines()).split()
 
-whole = Image.open('sample1200.tif') #
+out_dir = sys.argv[3]
+
+today = datetime.datetime.now().isoformat()[:10]
+
 for r, region in enumerate(REGIONS):
-    for frame in range(1, NUM_TAKES+1):
-        im = whole.crop((int(region[0]*47.2), int(region[1]*47.2), int(region[2]*47.2), int(region[3]*47.2)))
-        #im = scan_region(region)
+    for take in range(1, NUM_TAKES+1):
+        im = scan(region)
         # left
         dish = im.crop((0,0,im.size[1],im.size[1]))
         dish = crop_dish(dish)
-        dish.save('test_%s.tiff' % labels[2*r-2])
+        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r-2], today, take))
         # right
         dish = im.crop((im.size[0]-im.size[1],0,im.size[0],im.size[1]))
         dish = crop_dish(dish)
-        dish.save('test_%s.tiff' % labels[2*r-1])
+        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r-1], today, take))
 
