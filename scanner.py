@@ -69,9 +69,9 @@ for r, region in enumerate(REGIONS):
         # left
         dish = im.crop((0,0,im.size[1],im.size[1]))
         dish = crop_dish(dish)
-        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r-2], today, take))
+        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r], today, take))
         # right
         dish = im.crop((im.size[0]-im.size[1],0,im.size[0],im.size[1]))
         dish = crop_dish(dish)
-        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r-1], today, take))
+        dish.save('%s/%s_%s_%d.tiff' % (out_dir, labels[2*r+1], today, take))
 
