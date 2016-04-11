@@ -9,7 +9,7 @@ from ij.measure import ResultsTable
 # PARAMETERS
 HYST_HI = 17
 HYST_LO = 5
-DPI = float(800)
+DPI = float(1200)
 MIN_SIZE = 0.03 * (DPI/25.4)**2
 MAX_SIZE = 0.8 * (DPI/25.4)**2
 MIN_CIRC = 0.03
