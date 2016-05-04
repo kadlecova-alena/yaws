@@ -18,6 +18,7 @@ for label in labels:
     for take_a, take_b in combinations(range(1, NUM_TAKES+1),2):
         sys.stdout.write('\t%s(%s) & %s(%s)' % (label, take_a, label, take_b))
 sys.stdout.write('\n')
+sys.stdout.flush()
 
 for i in range(int((last-first).days)+1):
     day = (first+datetime.timedelta(i)).strftime("%Y-%m-%d")
@@ -29,5 +30,6 @@ for i in range(int((last-first).days)+1):
             file_b = '%s/%s_%s_%d.tiff' % (exp_dir, label, day, take_b)
 	    result = check_output(FIJI + [file_a, file_b])
 	    sys.stdout.write('\t%s' % result)
+            sys.stdout.flush()
     sys.stdout.write('\n')
 
