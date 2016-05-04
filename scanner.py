@@ -3,6 +3,7 @@ import sys, sane
 from PIL import Image
 from PIL.ImageDraw import Draw
 import datetime
+import time
 
 DPI = 1200
 MODE = 'Gray'
@@ -26,6 +27,8 @@ CUT_X = 0.268
 CUT_Y = 0.366
 
 NUM_TAKES = 3
+
+INTERVAL = 60
 
 sane.init()
 devices = sane.get_devices()
@@ -62,9 +65,13 @@ with open(sys.argv[2]) as labels_file:
 out_dir = sys.argv[3]
 
 today = datetime.datetime.now().isoformat()[:10]
-
+last_scan_time = None
 for r, region in enumerate(REGIONS):
     for take in range(1, NUM_TAKES+1):
+        if last_scan_time:
+            elapsed = time.time() - last_scan_time
+            time.sleep(max(0, INTERVAL - elapsed))
+        last_scan_time = time.time()
         im = scan(region)
         # left
         dish = im.crop((0,0,im.size[1],im.size[1]))
