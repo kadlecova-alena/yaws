@@ -65,6 +65,10 @@ with open(sys.argv[2]) as labels_file:
 out_dir = sys.argv[3]
 
 today = datetime.datetime.now().isoformat()[:10]
+
+im=scan((0, 0, 209.55, 295.91)) # wake-up call :)
+im.save('%s/whole_%s.tiff' % (out_dir, today))
+
 last_scan_time = None
 for r, region in enumerate(REGIONS):
     for take in range(1, NUM_TAKES+1):
