@@ -59,10 +59,10 @@ def crop_dish(image):
     Draw(image).polygon([(width,height),(int(width*(1-CUT_X)),height),(width,int(height*(1-CUT_Y)))], fill=1)
     return image
 
-with open(sys.argv[2]) as labels_file:
-    labels = ''.join(labels_file.readlines()).split()
+out_dir = sys.argv[2]
 
-out_dir = sys.argv[3]
+with open(out_dir + '/config.csv') as labels_file:
+    labels = ''.join(labels_file.readlines()).split()
 
 today = datetime.datetime.now().isoformat()[:10]
 
