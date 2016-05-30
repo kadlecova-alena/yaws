@@ -67,7 +67,6 @@ with open(out_dir + '/config.csv') as labels_file:
 today = datetime.datetime.now().isoformat()[:10]
 
 im=scan((0, 0, 209.55, 295.91)) # wake-up call :)
-im.save('%s/whole_%s.tiff' % (out_dir, today))
 
 last_scan_time = None
 for r, region in enumerate(REGIONS):
