@@ -3,7 +3,7 @@ import sys, datetime
 from itertools import combinations
 from subprocess import check_output
 
-FIJI=['/home/alena/bin/Fiji.app/ImageJ-linux32', '--headless', './fiji_macro.py']
+FIJI=['/home/alena/bin/Fiji.app/ImageJ-linux64', '--headless', './fiji_macro.py']
 NUM_TAKES = 3
 
 exp_dir = sys.argv[1]
