@@ -32,10 +32,10 @@ INTERVAL = 60
 
 sane.init()
 devices = sane.get_devices()
-scanners = [d for d in devices if d[2] == sys.argv[1]]
-if len(scanners) < 1:
-    raise Exception('Scanner %s not found. Available: %s' % (sys.argv[1], ', '.join([d[2] for d in devices])))
-scanner = sane.open(scanners[0][0])
+scanner_id = int(sys.argv[1])
+if scanner_id >= len(devices):
+    raise Exception('Invalid device id, only %d devices available.' % len(devices))
+scanner = sane.open(devices[scanner_id][0])
 scanner.resolution = DPI
 scanner.mode = MODE
 scanner.depth = DEPTH
