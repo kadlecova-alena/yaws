@@ -26,8 +26,6 @@ CANVAS_HEIGHT = int(2.365 * DPI)
 CUT_X = 0.268
 CUT_Y = 0.366
 
-NUM_TAKES = 3
-
 INTERVAL = 60
 
 sane.init()
@@ -64,13 +62,13 @@ out_dir = sys.argv[2]
 with open(out_dir + '/config.csv') as labels_file:
     labels = ''.join(labels_file.readlines()).split()
 
-today = datetime.datetime.now().isoformat()[:10]
+today = datetime.datetime.now().isoformat()[:19]
 
 im=scan((0, 0, 209.55, 295.91)) # wake-up call :)
 
 last_scan_time = None
 for r, region in enumerate(REGIONS):
-    for take in range(1, NUM_TAKES+1):
+    for take in (1, 2):
         if last_scan_time:
             elapsed = time.time() - last_scan_time
             time.sleep(max(0, INTERVAL - elapsed))
